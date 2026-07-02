@@ -1,5 +1,7 @@
 import base64
 import requests
+import json
+from pathlib import Path
 
 def get_port(config):
     config = base64.b64decode(config).decode('utf-8').split("\n")
@@ -20,6 +22,18 @@ def get_protocol(config):
     return protocol
 
 def servers():
+    if Path("/tmp/vpngate.json").exists():
+        with open("/tmp/vpngate.json", "r") as w:
+            content = json.loads(w.read())
+            w.close()
+    else:
+        with open("/tmp/vpngate.json", "w") as x:
+            content = fetch_servers()
+            x.write(json.dumps(content))
+    return content
+
+
+def fetch_servers():
     servers = {}
     data = requests.get("http://www.vpngate.net/api/iphone/").text.split("\n")[2:-2]
 
