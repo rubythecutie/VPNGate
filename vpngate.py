@@ -8,7 +8,7 @@ if len(sys.argv) > 1:
     if sys.argv[1] == "list":
         servers = vpngate.api.servers()
         for server, details in servers.items():
-            print(server.ljust(15), details["country"].ljust(2))
+            print(server.ljust(15), details["country"].ljust(2), details["port"].ljust(6), details["protocol"].ljust(4))
     elif sys.argv[1] == "connect":
         if len(sys.argv) < 3:
             print("Server not specified")
